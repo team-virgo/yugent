@@ -1,0 +1,49 @@
+{
+  "name": "yugent",
+  "version": "0.0.1",
+  "description": "A Simple Agent runtime for your LLM & Tool needs",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --noEmit",
+    "prepublish": "pnpm check && pnpm build"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./llm": "./dist/layers/llm/index.js",
+    "./tools": "./dist/layers/tools/index.js",
+    "./log": "./dist/layers/log/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "agent",
+    "ai",
+    "llm",
+    "tools",
+    "generative-ai",
+    "open-ai",
+    "anthropic",
+    "observability"
+  ],
+  "author": "mahesh @ b4s36t4",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/b4s36t4/yugent"
+  },
+  "packageManager": "pnpm@9.15.4",
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "undici": "^7.2.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
