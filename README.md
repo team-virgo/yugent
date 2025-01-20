@@ -121,3 +121,8 @@ llm.execute().then(() => {
   console.log("OpenAI: ", finalResponse?.content);
 });
 ```
+
+### Demo
+
+<img width="715" alt="Screenshot 2025-01-21 at 3 49 15 AM" src="https://github.com/user-attachments/assets/14283331-07d2-4f5d-9c6c-ec1688ebe96a" />
+
