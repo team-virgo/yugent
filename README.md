@@ -126,3 +126,22 @@ llm.execute().then(() => {
 
 <img width="715" alt="Screenshot 2025-01-21 at 3 49 15 AM" src="https://github.com/user-attachments/assets/14283331-07d2-4f5d-9c6c-ec1688ebe96a" />
 
+### Roadmap
+
+- [ ] Multiple LLM Provider i.e Anthropic, cohere, AWS Bedrock, gemini etc.
+- [ ] More tools (git, files, search, etc)
+- [ ] Extended logging and logging structure to record much information
+- [ ] Database Loggers i.e clickhouse, mysql, postgres etc.
+- [ ] Better typescript support.
+- [ ] CLI for boilerplate code generator for different set of layer (`log`, `llm`, `tool` etc.)
+- [ ] Introduce `execute` layer to execute code in a sandboxed environment or restricted program runner. First class support for `typescript` or `javascript`.
+
+### Contributing
+
+You can contribute to this repo in the following way
+
+- Raise PRs to solve a bug or to create feature
+- Report issues
+- Documentation (WIP)
+
+Docs for contributing are WIP.
