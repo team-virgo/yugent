@@ -1,3 +1,9 @@
+<h1 align="center">yugent</h1>
+<p align="center">
+Simple and modular agentic runtime built with typescript. Chat, Execute and Log everything for your LLM needs. Extensible design to support everything from local to cloud.
+</p>
+
+
 ### Creating a Tool
 
 ```typescript
