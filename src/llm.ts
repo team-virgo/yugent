@@ -11,7 +11,7 @@ export class LLM {
     this._layers.push(layer);
   }
 
-  getLLMLayer() {
+  protected getLLMLayer() {
     const layers = this._layers.filter((layer) => layer.type === "llm");
     if (layers.length > 1) {
       throw new Error("LLMLayer should provided only once.");

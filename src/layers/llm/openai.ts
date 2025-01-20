@@ -7,11 +7,6 @@ import {
   ToolLayer,
 } from "../../type";
 
-interface Params {
-  model: string;
-  envKey: string;
-}
-
 interface OpenAIResponse {
   id: string;
   object: "chat.completion";
@@ -37,30 +32,31 @@ interface OpenAIResponse {
   }[];
 }
 
-export class OpenAI implements LLMLayer<OpenAIMessage>, Params {
-  url: string = "https://api.openai.com/";
-  name: string = "OpenAI";
+export class OpenAI extends LLMLayer<OpenAIMessage> {
+  protected url: string = "https://api.openai.com/";
+  protected name: string = "OpenAI";
   messages: OpenAIMessage[] = [];
-  tools: ToolLayer[] = [];
+  #tools: ToolLayer[] = [];
   type = "llm" as const;
 
-  model: string = "";
-  envKey: string = "";
+  private model: string = "";
+  private envKey: string = "";
 
   private client: Client;
 
   constructor(model: string, envKey: string) {
+    super();
     this.model = model;
     this.client = new Client(this.url, { connectTimeout: 60 * 1000 });
     this.envKey = envKey;
   }
 
-  human = (input: string) => {
+  public human = (input: string) => {
     this.messages.push({ content: input, role: "user" });
   };
 
-  tool = async (tool: Tool, params: any) => {
-    const toolToExecute = this.tools.find(
+  protected tool = async (tool: Tool, params: any) => {
+    const toolToExecute = this.#tools.find(
       (_tool) => tool.id === _tool.id || tool.id === _tool.tool.name
     );
 
@@ -77,8 +73,8 @@ export class OpenAI implements LLMLayer<OpenAIMessage>, Params {
     });
   };
 
-  getBody = () => {
-    const tools = this.tools.map((tool) => tool.tool.toTool?.());
+  private getBody = () => {
+    const tools = this.#tools.map((tool) => tool.tool.toTool?.());
 
     return {
       messages: this.messages,
@@ -131,7 +127,7 @@ export class OpenAI implements LLMLayer<OpenAIMessage>, Params {
 
   attach = (attachType: AttachType) => {
     if (attachType.key === "tools") {
-      this.tools.push(...attachType.value);
+      this.#tools.push(...attachType.value);
     }
   };
 }

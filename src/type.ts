@@ -71,16 +71,16 @@ export type AttachType =
   | { key: "messages"; value: OpenAIMessage[] }
   | { key: "client"; value: import("undici").Client };
 
-export interface LLMLayer<Message> extends LayerType<"llm"> {
-  type: "llm";
-  url: string;
-  name: string;
-  messages: OpenAIMessage[];
-  human: (input: string) => void;
-  tool: (tool: Tool, params: any) => Promise<void>;
-  execute: () => Promise<void>;
+export abstract class LLMLayer<Message> implements LayerType<"llm"> {
+  type = "llm" as const;
+  protected abstract url: string;
+  protected abstract name: string;
+  abstract messages: OpenAIMessage[];
+  public abstract human: (input: string) => void;
+  protected abstract tool: (tool: Tool, params: any) => Promise<void>;
+  abstract execute: () => Promise<void>;
 
-  attach: (attachType: AttachType) => void;
+  abstract attach: (attachType: AttachType) => void;
 }
 
 export interface ToolLayer extends LayerType<"tool"> {
