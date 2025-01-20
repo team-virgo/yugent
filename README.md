@@ -1,14 +1,23 @@
 ### Creating a Tool
 
 ```typescript
-import { Tool } from "yugent/tools";
+import { example, ToolBase } from "yugent";
 
-class WeatherTool extends Tool<{ city: string }, { temperature: string }> {
+@example(`
+    interface Input {
+      /**
+       * city to get the weather for
+       */
+      city: string;
+    }
+`)
+class WeatherTool extends ToolBase<{ city: string }, { temperature: string }> {
   constructor() {
     super("get_weather", "Returns weather info for given city");
   }
 
   async handler(params: { city: string }): Promise<{ temperature: string }> {
+    // Handle API to fetch temp.
     return { temperature: "16.7 C" };
   }
 }
@@ -72,21 +81,13 @@ export class DiscordLog implements HTTPLogger {
 ### Creating a tool layer
 
 ```typescript
-@example(`
-    interface Input {
-      /**
-       * City to query the weather for
-       */
-      city: string
-    }
-`)
-export class WeatherTool implements ToolLayer {
+export class Weather implements ToolLayer {
   tool: Tool<any, any>;
   id = "get_weather";
   type = "tool" as const;
 
   constructor(apiKey: string) {
-    this.tool = new Weather(apiKey);
+    this.tool = new WeatherTool(apiKey);
   }
 }
 ```
