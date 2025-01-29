@@ -73,12 +73,19 @@ export type AttachType =
 
 export abstract class LLMLayer<Message> implements LayerType<"llm"> {
   type = "llm" as const;
-  protected abstract url: string;
+  protected abstract set url(_url: string);
+  protected abstract get url();
+
+  abstract set model(model: string);
+  abstract get model();
+
   protected abstract name: string;
-  abstract messages: OpenAIMessage[];
+  abstract messages: Message[] | OpenAIMessage[];
   public abstract human: (input: string) => void;
   protected abstract tool: (tool: Tool, params: any) => Promise<void>;
-  abstract execute: () => Promise<void>;
+  abstract execute: () => Promise<void | ErrorResponse>;
+
+  protected abstract getHeaders(): Record<string, string>;
 
   abstract attach: (attachType: AttachType) => void;
 }
@@ -132,3 +139,5 @@ export type Layer<T extends Record<string, unknown>> =
   | LLMLayer<T>
   | LogLayer
   | ToolLayer;
+
+export type ErrorResponse = any;

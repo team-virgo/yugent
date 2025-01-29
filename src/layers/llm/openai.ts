@@ -7,7 +7,7 @@ import {
   ToolLayer,
 } from "../../type";
 
-interface OpenAIResponse {
+export interface OpenAIResponse {
   id: string;
   object: "chat.completion";
   choices: {
@@ -33,22 +33,38 @@ interface OpenAIResponse {
 }
 
 export class OpenAI extends LLMLayer<OpenAIMessage> {
-  protected url: string = "https://api.openai.com/";
   protected name: string = "OpenAI";
   messages: OpenAIMessage[] = [];
   #tools: ToolLayer[] = [];
   type = "llm" as const;
 
-  private model: string = "";
-  private envKey: string = "";
+  private _model: string = "";
+  protected envKey: string = "";
+  protected completionsPath = "/v1/chat/completions";
 
-  private client: Client;
+  protected _client: Client | null = null;
+
+  get url() {
+    return "https://api.openai.com";
+  }
+
+  public get model() {
+    return this._model;
+  }
+
+  public set model(_model: string) {
+    this._model = _model;
+  }
 
   constructor(model: string, envKey: string) {
     super();
-    this.model = model;
-    this.client = new Client(this.url, { connectTimeout: 60 * 1000 });
+    this._model = model;
     this.envKey = envKey;
+  }
+
+  get client() {
+    this._client = new Client(this.url, { connectTimeout: 60 * 1000 });
+    return this._client;
   }
 
   public human = (input: string) => {
@@ -83,21 +99,29 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
     };
   };
 
+  protected getHeaders(): Record<string, string> {
+    const key = process.env[this.envKey] ?? "";
+    const headers = {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+    };
+    return headers;
+  }
+
   execute = async () => {
     const body = this.getBody();
-    const key = process.env[this.envKey] ?? "";
     const request = await this.client.request({
-      path: "/v1/chat/completions",
+      path: this.completionsPath,
       method: "POST",
       body: JSON.stringify(body),
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
+      headers: this.getHeaders(),
     });
 
     try {
       const response = (await request.body.json()) as OpenAIResponse;
+      if (request.statusCode !== 200) {
+        return response;
+      }
       const choice = response.choices[0];
       const finish_reason = choice.finish_reason;
 
