@@ -219,6 +219,9 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
                 this.end();
               }
             },
+            final: () => {
+              streamer?.end();
+            },
           });
         }
       );
