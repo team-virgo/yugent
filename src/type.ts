@@ -39,7 +39,7 @@ export interface LayerType<T extends "llm" | "log" | "tool" | "execute"> {
 }
 
 export interface OpenAIMessage {
-  role: "user" | "assistant" | "system" | "tool";
+  role: "user" | "assistant" | "system" | "tool" | "tool_call";
   tool_call_id?: string;
   content:
     | null
@@ -83,7 +83,7 @@ export abstract class LLMLayer<Message> implements LayerType<"llm"> {
   abstract messages: Message[] | OpenAIMessage[];
   public abstract human: (input: string) => void;
   protected abstract tool: (tool: Tool, params: any) => Promise<void>;
-  abstract execute: () => Promise<void | ErrorResponse>;
+  abstract execute: (options?: ExecuteOptions) => Promise<void | ErrorResponse>;
 
   protected abstract getHeaders(): Record<string, string>;
 
@@ -141,3 +141,9 @@ export type Layer<T extends Record<string, unknown>> =
   | ToolLayer;
 
 export type ErrorResponse = any;
+
+export type ExecuteOptions = {
+  autoToolCall?: boolean;
+  stream?: boolean;
+  streamer?: import("stream").Writable;
+};

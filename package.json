@@ -17,6 +17,7 @@
   "files": [
     "dist"
   ],
+  "type": "module",
   "types": "./dist/index.d.ts",
   "keywords": [
     "agent",

@@ -1,7 +1,7 @@
-import { LLM } from "yugent";
-import { Mistral } from "yugent/llm";
-import { Weather } from "yugent/tools";
-import { LocalLog } from "yugent/log";
+import { LLM } from "../src";
+import { Mistral } from "../src/layers/llm";
+import { Weather } from "../src/layers/tools";
+import { LocalLog } from "../src/layers/log";
 
 import "dotenv/config";
 
@@ -17,7 +17,7 @@ mistral.human("What is weather in California now?");
 const main = async () => {
   await llm.execute();
 
-  console.log(mistral.messages.at(-1).content);
+  console.log(mistral.messages.at(-1)?.content);
 
   mistral.url = "https://codestral.mistral.ai/";
 
@@ -28,7 +28,7 @@ const main = async () => {
   mistral.human("Write a rust program for finding the n prime numbers");
 
   await llm.execute();
-  console.log(mistral.messages.at(-1).content);
+  console.log(mistral.messages.at(-1)?.content);
 };
 
 await main();

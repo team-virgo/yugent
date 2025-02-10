@@ -1,4 +1,4 @@
-import { Layer, LLMLayer, LogMessage } from "./type";
+import { ExecuteOptions, Layer, LLMLayer, LogMessage } from "./type";
 
 export class LLM {
   private _layers: Layer<any>[] = [];
@@ -24,7 +24,7 @@ export class LLM {
     return layers.at(0) as LLMLayer<any>;
   }
 
-  async execute() {
+  async execute(options?: ExecuteOptions) {
     const llmLayer = this.getLLMLayer();
     const logLayers = this._layers.filter((layer) => layer.type === "log");
     const toolLayer = this._layers.filter((layer) => layer.type === "tool");
@@ -35,6 +35,6 @@ export class LLM {
 
     llmLayer.attach({ key: "tools", value: toolLayer });
 
-    await llmLayer.execute();
+    await llmLayer.execute(options);
   }
 }
