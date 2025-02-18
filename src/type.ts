@@ -146,4 +146,5 @@ export type ExecuteOptions = {
   autoToolCall?: boolean;
   stream?: boolean;
   streamer?: import("stream").Writable;
+  signal?: AbortSignal;
 };
