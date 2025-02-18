@@ -199,6 +199,7 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
           method: "POST",
           body: JSON.stringify(body),
           headers: this.getHeaders(),
+          signal: options?.signal,
         },
         ({ statusCode, headers }) => {
           if (statusCode !== 200) {
@@ -232,6 +233,7 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
       method: "POST",
       body: JSON.stringify(body),
       headers: this.getHeaders(),
+      signal: options?.signal,
     });
 
     if (request.statusCode !== 200) {
