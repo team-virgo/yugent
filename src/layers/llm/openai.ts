@@ -237,7 +237,8 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
     });
 
     if (request.statusCode !== 200) {
-      return await request.body.json();
+      const errorText = await request.body.text();
+      throw new Error(errorText);
     }
     try {
       const response = (await request.body.json()) as OpenAIResponse;
