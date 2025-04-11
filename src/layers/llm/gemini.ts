@@ -1,10 +1,10 @@
 import { OpenAI } from "./openai";
 
-export class Groq extends OpenAI {
-  protected _url: string = "https://api.groq.com/";
-  protected name: string = "Groq";
+export class Gemini extends OpenAI {
+  protected _url: string = "https://generativelanguage.googleapis.com/";
+  protected name: string = "Gemini";
 
-  protected completionsPath: string = "/openai/v1/chat/completions";
+  protected completionsPath: string = "/v1beta/openai/chat/completions";
 
   get url() {
     return this._url;
