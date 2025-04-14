@@ -75,7 +75,7 @@ export abstract class Tool<P, R> {
     return this._description!;
   }
 
-  abstract handler(params: P): Promise<R>;
+  abstract handler(params: P): R | Promise<R>;
 }
 
 export const example = (value: string) => {
