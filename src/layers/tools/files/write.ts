@@ -30,6 +30,9 @@ interface WriteFileOutput {
     }
   `)
 export class WriteFileTool extends Tool<WriteFileInput, WriteFileOutput> {
+  constructor() {
+    super("write_file", "Writes and returns the content of a file.");
+  }
   async handler(params: WriteFileInput): Promise<WriteFileOutput> {
     if (params.overwrite) {
       fs.writeFileSync(params.path, params.content);

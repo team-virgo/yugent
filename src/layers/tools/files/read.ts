@@ -18,6 +18,9 @@ interface ReadFileOutput {
     }
   `)
 export class ReadFileTool extends Tool<ReadFileInput, ReadFileOutput> {
+  constructor() {
+    super("read_file", "Reads and returns the content of a file.");
+  }
   async handler(params: ReadFileInput): Promise<ReadFileOutput> {
     const fileExists = fs.existsSync(params.path);
     if (!fileExists) {
