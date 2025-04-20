@@ -67,7 +67,7 @@ export interface Tool {
 export type ToolBase = import("./tools/base").Tool<any, any>;
 
 export type AttachType =
-  | { key: "tools"; value: ToolLayer[] }
+  | { key: "tools"; value?: ToolLayer[]; json?: string }
   | { key: "messages"; value: OpenAIMessage[] }
   | { key: "client"; value: import("undici").Client };
 

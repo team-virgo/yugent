@@ -67,6 +67,7 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
   protected name: string = "OpenAI";
   messages: OpenAIMessage[] = [];
   #tools: ToolLayer[] = [];
+  #toolsJson: string[] = [];
   type = "llm" as const;
 
   private _model: string = "";
@@ -122,6 +123,17 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
 
   private getBody = (stream?: boolean) => {
     const tools = this.#tools.map((tool) => tool.tool.toTool?.());
+    const toolJson = this.#toolsJson
+      .map((json) => {
+        try {
+          JSON.parse(json);
+        } catch (error) {
+          return false;
+        }
+      })
+      .filter(Boolean);
+
+    tools.push(...(toolJson ?? []));
 
     return {
       messages: this.messages,
@@ -274,7 +286,11 @@ export class OpenAI extends LLMLayer<OpenAIMessage> {
 
   attach = (attachType: AttachType) => {
     if (attachType.key === "tools") {
-      this.#tools.push(...attachType.value);
+      if (attachType.json) {
+        this.#toolsJson.push(attachType.json);
+      } else {
+        this.#tools.push(...(attachType.value ?? []));
+      }
     }
   };
 }

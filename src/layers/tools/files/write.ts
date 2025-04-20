@@ -16,7 +16,7 @@ interface WriteFileOutput {
 @example(`
     interface ReadFile {
       /**
-       * Full path of the file to read.
+       * Absolute path of the file to read.
        */
       path: string
       /**
